@@ -1,0 +1,4 @@
+{
+  // 项目开发推荐插件
+  "recommendations": ["Vue.volar", "Vue.vscode-typescript-vue-plugin"]
+}
