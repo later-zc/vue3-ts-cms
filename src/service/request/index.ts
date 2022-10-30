@@ -30,7 +30,7 @@ class Request {
       },
       (err) => {
         console.log('全局响应成功拦截')
-        return err
+        return err.response.data
       }
     )
 
