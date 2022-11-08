@@ -10,7 +10,6 @@ import registerStore from './store'
 import registerIcons from './global/register-icons'
 // import 'element-plus/theme-chalk/el-message.css'
 
-console.log('bug5')
 console.log('first')
 
 const app = createApp(App)
