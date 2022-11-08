@@ -10,8 +10,6 @@ import registerStore from './store'
 import registerIcons from './global/register-icons'
 // import 'element-plus/theme-chalk/el-message.css'
 
-console.log('产生一个bug03')
-
 const app = createApp(App)
 app.use(registerIcons)
 app.use(registerStore)
