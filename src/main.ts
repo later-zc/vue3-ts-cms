@@ -11,7 +11,6 @@ import registerIcons from './global/register-icons'
 // import 'element-plus/theme-chalk/el-message.css'
 
 console.log('产生一个bug03')
-console.log('first')
 
 const app = createApp(App)
 app.use(registerIcons)
