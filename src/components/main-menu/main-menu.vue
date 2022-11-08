@@ -68,17 +68,18 @@ const defaultActive = computed(() => {
 
 .logo {
   display: flex;
-  height: 28px;
-  padding: 12px 10px 8px 10px;
-  flex-direction: row;
-  justify-content: flex-start;
   align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  height: 48px;
+  padding: 10px;
+
   overflow: hidden;
   background-color: #001529;
 
   .img {
     height: 100%;
-    margin: 0 10px;
+    margin-right: 10px;
   }
 
   .title {
@@ -91,6 +92,15 @@ const defaultActive = computed(() => {
 
 .menu {
   // background-color: rgb(12, 34, 53);
+  height: calc(100vh - 48px);
+  overflow-y: auto;
+
+  scrollbar-width: none; /* firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 .el-menu {
   border-right: none;

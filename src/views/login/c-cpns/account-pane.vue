@@ -20,13 +20,14 @@
 
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
-import { ElMessage, type ElForm, type FormRules } from 'element-plus'
+import type { ElForm, FormRules } from 'element-plus'
 import router from '@/router'
 
 import useLoginStore from '@/store/login/login'
 import type { IAccount } from '@/types'
 import { localCache } from '@/utils/cache'
 import { CACHE_NAME, CACHE_PASSWORD } from '@/global/constant'
+import showMessage from '@/utils/showMessage'
 
 const account = reactive<IAccount>({
   name: localCache.getCache(CACHE_NAME) ?? '',
@@ -35,13 +36,19 @@ const account = reactive<IAccount>({
 const accountRules: FormRules = {
   name: [
     { required: true, message: '必须输入帐号信息', trigger: 'blur' },
-    { pattern: /^[a-z0-9]{6,20}$/, message: '必须是6~20位', trigger: 'change' },
-    { pattern: /^[a-z0-9]{6,20}$/, message: '必须是6~20位', trigger: 'blur' }
+    {
+      pattern: /^[a-z0-9]{6,20}$/,
+      message: '必须是6~20位',
+      trigger: ['change', 'blur']
+    }
   ],
   password: [
     { required: true, message: '必须输入密码信息', trigger: 'blur' },
-    { pattern: /^[a-z0-9]{3,20}$/, message: '必须是3~20位', trigger: 'change' },
-    { pattern: /^[a-z0-9]{3,20}$/, message: '必须是3~20位', trigger: 'blur' }
+    {
+      pattern: /^[a-z0-9]{3,20}$/,
+      message: '必须是3~20位',
+      trigger: ['change', 'blur']
+    }
   ]
 }
 
@@ -50,7 +57,7 @@ const loginStore = useLoginStore()
 
 const loginHandler = (isRememberPassword: boolean) => {
   formRef.value?.validate((isValid) => {
-    if (!isValid) return ElMessage.error('请输入正确的格式')
+    if (!isValid) return showMessage('请输入正确的格式', 'error')
 
     loginStore
       .loginAccountAction({
@@ -67,12 +74,12 @@ const loginHandler = (isRememberPassword: boolean) => {
             localCache.removeCache(CACHE_PASSWORD)
           }
 
-          ElMessage.success('欢迎回来')
+          showMessage('欢迎回来', 'success')
           router.push('/main')
         },
         (err) => {
           console.error('err: ', err)
-          ElMessage.error(err)
+          showMessage(err, 'error')
         }
       )
   })

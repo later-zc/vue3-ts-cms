@@ -21,7 +21,6 @@ class Request {
         return err
       }
     )
-    console.log('res1: ', res1)
 
     const res2 = this.instance.interceptors.response.use(
       (res) => {
@@ -33,8 +32,6 @@ class Request {
         return err.response.data
       }
     )
-
-    console.log('res2: ', res2)
 
     // 类型缩小
     // if (config.interceptors) {
@@ -98,14 +95,14 @@ class Request {
   delete<T = any>(config: ZCRequestConfig<T>) {
     return this.request({
       ...config,
-      method: 'Delete'
+      method: 'DELETE'
     })
   }
 
-  pacth<T = any>(config: ZCRequestConfig<T>) {
+  patch<T = any>(config: ZCRequestConfig<T>) {
     return this.request({
       ...config,
-      method: 'Pacth'
+      method: 'PATCH'
     })
   }
 }

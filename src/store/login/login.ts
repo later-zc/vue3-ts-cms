@@ -6,6 +6,7 @@ import { localCache } from '@/utils/cache'
 import { USER_INFO, LOGIN_TOKEN, USER_MENUS } from '@/global/constant'
 import mapMenusToRoutes from '@/utils/mapMenus'
 import router from '@/router'
+import useMainStore from '../main/main'
 
 interface ILoginState {
   accountInfo: {
@@ -45,6 +46,9 @@ const useLoginStore = defineStore('login', {
 
       const routes = mapMenusToRoutes(userMenusResult.data)
       routes.forEach((route) => router.addRoute('main', route))
+
+      const mainStore = useMainStore()
+      mainStore.getEntireDataAction()
     },
     loadLocalCacheAction() {
       const token = localCache.getCache(LOGIN_TOKEN)
@@ -59,6 +63,9 @@ const useLoginStore = defineStore('login', {
 
         const routes = mapMenusToRoutes(userMenus)
         routes.forEach((route) => router.addRoute('main', route))
+
+        const mainStore = useMainStore()
+        mainStore.getEntireDataAction()
       }
     }
   }

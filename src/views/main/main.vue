@@ -33,13 +33,27 @@ const foldChangeHandler = (is_Fold: boolean) => {
   .main-content {
     height: 100%;
     .el-aside {
-      transition: width 0.6s ease;
+      overflow: hidden;
+      // overflow-x: hidden;
+      // overflow-y: auto;
+      // line-height: 200px;
+      // text-align: left;
+      // cursor: pointer;
+      // background-color: #001529;
+      // scrollbar-width: none; /* firefox */
+      // -ms-overflow-style: none; /* IE 10+ */
+
+      transition: width 0.3s ease;
+
+      // &::-webkit-scrollbar {
+      //   display: none;
+      // }
     }
-    .el-header {
-      // background-color: gray;
-    }
+    // .el-header {
+    //   // background-color: gray;
+    // }
     .el-main {
-      background-color: cadetblue;
+      background-color: skyblue;
     }
   }
 }
