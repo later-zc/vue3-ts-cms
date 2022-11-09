@@ -2,15 +2,22 @@ import {
   createNewUser,
   deleteUser,
   editUserInfo,
-  getUserListData
+  getUserListData,
+  newPageData,
+  postPageListData,
+  editPageData,
+  deletePageById
 } from '@/service/main/system/system'
 import { defineStore } from 'pinia'
 import type { ISystemState } from './type'
+import useMainStore from '../main'
 
 const useSystemStore = defineStore('system', {
   state: (): ISystemState => ({
     usersList: [],
-    usersTotalCount: 0
+    usersTotalCount: 0,
+    pageList: [],
+    pageTotalCount: 0
   }),
   actions: {
     async getUserListAction(queryInfo: any) {
@@ -31,6 +38,37 @@ const useSystemStore = defineStore('system', {
     async editUserInfo(id: number, userInfo: any) {
       const editUserInfoResult = await editUserInfo(id, userInfo)
       this.getUserListAction({ offset: 0, size: 10 })
+    },
+    async postPageListAction(pageName: string, queryInfo: any) {
+      const pageListResult = await postPageListData(pageName, queryInfo)
+      const { totalCount, list } = pageListResult.data
+
+      this.pageList = list
+      this.pageTotalCount = totalCount
+    },
+    async deletePageByIdAction(pageName: string, id: number) {
+      const deleteResult = await deletePageById(pageName, id)
+      this.postPageListAction(pageName, { offset: 0, size: 10 })
+
+      // 获取完整的数据
+      const mainStore = useMainStore()
+      mainStore.getEntireDataAction()
+    },
+    async newPageDataAction(pageName: string, pageInfo: any) {
+      const newResult = await newPageData(pageName, pageInfo)
+      this.postPageListAction(pageName, { offset: 0, size: 10 })
+
+      // 获取完整的数据
+      const mainStore = useMainStore()
+      mainStore.getEntireDataAction()
+    },
+    async editPageDataAction(pageName: string, id: number, pageInfo: any) {
+      const editResult = await editPageData(pageName, id, pageInfo)
+      this.postPageListAction(pageName, { offset: 0, size: 10 })
+
+      // 获取完整的数据
+      const mainStore = useMainStore()
+      mainStore.getEntireDataAction()
     }
   }
 })

@@ -49,11 +49,8 @@ const foldChangeHandler = (is_Fold: boolean) => {
       //   display: none;
       // }
     }
-    // .el-header {
-    //   // background-color: gray;
-    // }
-    .el-main {
-      background-color: skyblue;
+    .el-header {
+      border-bottom: 1px solid #ccc;
     }
   }
 }

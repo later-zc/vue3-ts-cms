@@ -7,9 +7,9 @@
 
 let BASE_URL = ''
 if (import.meta.env.DEV) {
-  BASE_URL = 'http://152.136.185.210:4000'
-} else {
   BASE_URL = 'http://152.136.185.210:5000'
+} else {
+  BASE_URL = 'http://152.136.185.210:4000'
 }
 
 export const TIMEOUT = 10000

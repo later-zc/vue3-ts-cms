@@ -27,3 +27,30 @@ export function editUserInfo(id: number, userInfo: any) {
     data: userInfo
   })
 }
+
+export function postPageListData(pageName: string, queryInfo: any) {
+  return request.post({
+    url: `/${pageName}/list`,
+    data: queryInfo
+  })
+}
+
+export function deletePageById(pageName: string, id: number) {
+  return request.delete({
+    url: `/${pageName}/${id}`
+  })
+}
+
+export function newPageData(pageName: string, pageInfo: any) {
+  return request.post({
+    url: `/${pageName}`,
+    data: pageInfo
+  })
+}
+
+export function editPageData(pageName: string, id: number, pageInfo: any) {
+  return request.patch({
+    url: `/${pageName}/${id}`,
+    data: pageInfo
+  })
+}

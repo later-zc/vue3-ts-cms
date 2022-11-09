@@ -4,7 +4,7 @@ import { accountLogin, getUserInfo, getUserMenus } from '@/service/login/login'
 import type { IAccount } from '@/types'
 import { localCache } from '@/utils/cache'
 import { USER_INFO, LOGIN_TOKEN, USER_MENUS } from '@/global/constant'
-import mapMenusToRoutes from '@/utils/mapMenus'
+import { mapMenusToPermissions, mapMenusToRoutes } from '@/utils/mapMenus'
 import router from '@/router'
 import useMainStore from '../main/main'
 
@@ -15,6 +15,7 @@ interface ILoginState {
   }
   userInfo: any
   userMenus: any[]
+  permissions: string[]
 }
 
 const useLoginStore = defineStore('login', {
@@ -25,7 +26,8 @@ const useLoginStore = defineStore('login', {
       token: ''
     },
     userInfo: {},
-    userMenus: []
+    userMenus: [],
+    permissions: []
   }),
   actions: {
     async loginAccountAction(account: IAccount) {
@@ -40,15 +42,22 @@ const useLoginStore = defineStore('login', {
       localCache.setCache(USER_INFO, userInfoResult.data)
 
       const userMenusResult = await getUserMenus(this.userInfo.role.id)
-      if (!userMenusResult.data) return Promise.reject(userMenusResult)
-      this.userMenus = userMenusResult.data
-      localCache.setCache(USER_MENUS, userMenusResult.data)
+      const userMenus = userMenusResult.data
 
-      const routes = mapMenusToRoutes(userMenusResult.data)
-      routes.forEach((route) => router.addRoute('main', route))
+      if (!userMenus) return Promise.reject(userMenusResult)
+      this.userMenus = userMenus
+      localCache.setCache(USER_MENUS, userMenus)
 
       const mainStore = useMainStore()
       mainStore.getEntireDataAction()
+
+      // 获取登录用户的所有按钮的权限
+      const permissions = mapMenusToPermissions(userMenus)
+      this.permissions = permissions
+
+      // 动态添加路由
+      const routes = mapMenusToRoutes(userMenus)
+      routes.forEach((route) => router.addRoute('main', route))
     },
     loadLocalCacheAction() {
       const token = localCache.getCache(LOGIN_TOKEN)
@@ -61,11 +70,17 @@ const useLoginStore = defineStore('login', {
         this.userInfo = userInfo
         this.userMenus = userMenus
 
-        const routes = mapMenusToRoutes(userMenus)
-        routes.forEach((route) => router.addRoute('main', route))
-
+        // 1..请求所有roles/departments数据
         const mainStore = useMainStore()
         mainStore.getEntireDataAction()
+
+        // 2.获取按钮的权限
+        const permissions = mapMenusToPermissions(userMenus)
+        this.permissions = permissions
+
+        // 3.动态添加路由
+        const routes = mapMenusToRoutes(userMenus)
+        routes.forEach((route) => router.addRoute('main', route))
       }
     }
   }
