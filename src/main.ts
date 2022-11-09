@@ -18,5 +18,3 @@ app.use(registerStore)
 app.use(router)
 // app.use(ElementPlus)
 app.mount('#app')
-
-console.log('hello world')
